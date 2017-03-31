@@ -15,7 +15,9 @@
 #include "halfling.h"
 #include <string>
 #include <iostream>
-
+#include <fstream>
+#include <vector>
+#include "textdisplay.h"
 int main() 
 {
   std::string str;
@@ -31,6 +33,9 @@ int main()
   Merchant *mer = new Merchant();
   Dragon *dra  = new Dragon();
   Halfling *hal = new Halfling();
+
+  TextDisplay td;
+  std::cout << td;  
 
   while ( std::cin >> str )
   {

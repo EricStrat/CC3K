@@ -18,10 +18,11 @@ class Character
   int baseDef;
   int gold;
   std::string race;
+  char symbol;  
 
   public:
 
-  Character( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race );
+  Character( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race, char symbol );
   virtual ~Character();
 
   int getHP();

@@ -13,7 +13,7 @@ class Enemy : public Character
 {
   public:
 
-  Enemy( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race );  
+  Enemy( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race, char symbol );  
   virtual ~Enemy();
 
   virtual void attack( Shade &p ) = 0;

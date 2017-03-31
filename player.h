@@ -13,7 +13,7 @@ class Enemy;
 
 class Player : public Character
 {
-
+  
   public: 
 
   virtual ~Player();  

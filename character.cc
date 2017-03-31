@@ -54,8 +54,8 @@ void Character::mutGold( int i )
 
 void Character::slain() { std::cout << getRace() << " is Slain" << std::endl; }
 
-Character::Character( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race )
+Character::Character( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race, char symbol )
 : HP{HP}, baseHP{baseHP}, atk{atk}, baseAtk{baseAtk},
-  def{def}, baseDef{baseDef}, gold{gold}, race{race} {}
+  def{def}, baseDef{baseDef}, gold{gold}, race{race}, symbol{symbol} {}
 
 Character::~Character() {}
