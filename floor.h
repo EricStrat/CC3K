@@ -14,7 +14,7 @@ class Floor
 { 
   std::vector<std::vector<Cell*>> theFloor;
   std::vector<Chamber*> theChambers;
-  std::vector<Character*> theCharacters;
+  std::vector<Character*> theEnemies;
   int level, len, wid;
   
   Player* mainChar;
@@ -24,11 +24,12 @@ class Floor
   Floor( int lvl, std::string cmd );
   ~Floor();
   void clearFloor();
-  void move( std::string direction );
+  void move( Character* cp1, std::string direction );
+  void moveEnemies();
   void init( int lvl );
 //  void set(int r, int c, Character* pc1 );
-  
-
+  Character* getMainChar();    
+  void newTurn();
 
   friend std::ostream &operator<<(std::ostream &out, const Floor &f);
 };

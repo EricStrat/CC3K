@@ -5,7 +5,7 @@
 #include "ctime"
 
 Floor::Floor( int level, std::string cmd ) 
-: level{level}, len{len}, wid{wid}, mainChar{mainChar}
+: level{level}, len{len}, wid{wid}
 {
   if ( cmd == "s" || cmd == "S" ) mainChar = new Shade;
   else if ( cmd == "d" || cmd == "D" ) mainChar = new Drow;
@@ -14,14 +14,23 @@ Floor::Floor( int level, std::string cmd )
   else if ( cmd == "t" || cmd == "T" ) mainChar = new Troll;
 }
 
+Character* Floor::getMainChar(){ return mainChar; }
+
 void Floor::clearFloor() 
 { 
   theFloor.clear(); 
   theChambers.clear();// leak mem??
-  theCharacters.clear(); // leak mem??
+  theEnemies.clear(); // leak mem??
 }
 
 Floor::~Floor() { clearFloor(); }
+
+void Floor::newTurn()
+{
+  
+
+
+}
 
 void Floor::init( int lvl ) 
 { 
@@ -42,32 +51,32 @@ void Floor::init( int lvl )
     if ( rng < 4 ) 
     {
       Human* ene = new Human;
-      theCharacters.emplace_back( ene );
+      theEnemies.emplace_back( ene );
     }
     else if ( rng < 7 )
     {
        Dwarf* ene = new Dwarf;
-       theCharacters.emplace_back( ene );
+       theEnemies.emplace_back( ene );
     }
     else if ( rng < 12 ) 
     {
       Halfling* ene = new Halfling;
-      theCharacters.emplace_back( ene );
+      theEnemies.emplace_back( ene );
     }
     else if ( rng < 14 )
     {
        Elf* ene = new Elf;
-       theCharacters.emplace_back( ene );
+       theEnemies.emplace_back( ene );
     }
     else if ( rng < 16 )
     {
        Orc* ene = new Orc;
-       theCharacters.emplace_back( ene );
+       theEnemies.emplace_back( ene );
     }
     else 
     {
       Merchant* ene = new Merchant;
-      theCharacters.emplace_back( ene );
+      theEnemies.emplace_back( ene );
     }
   }
 
@@ -107,88 +116,101 @@ void Floor::init( int lvl )
   for ( int i = 0; i < 20; ++i )
   {
     int z = rand() % 5;
-    theChambers.at( z )->placeChar( theCharacters.at( i ) );
+    theChambers.at( z )->placeChar( theEnemies.at( i ) );
   }  
 }
 
-void Floor::move( std::string direction)
+void Floor::moveEnemies()
 {
-  int startRow = mainChar->getRow();
-  int startCol = mainChar->getCol();
+  int len = theEnemies.size();
+  std::cout << "Enemy size " << len << std::endl;
+  srand( time(NULL) );
+  std::string randPos[8] = {"no", "ea", "we", "so", "nw", "ne", "se", "sw"};
+  for ( int i = 0; i < len; ++i )
+  {
+    int rng = rand() % 8;
+    move( theEnemies[i], randPos[rng]);
+  }
+}
+
+void Floor::move( Character* cp1, std::string direction )
+{
+  int startRow = cp1->getRow();
+  int startCol = cp1->getCol();
   if ( direction == "no" )
   {
-    if ( theFloor[startRow-1][startCol]->getPmov() )
+    if (cp1->getType() == "player"? theFloor[startRow-1][startCol]->getPmov() : theFloor[startRow-1][startCol]->getEmov()) 
     {  
       theFloor[startRow-1][startCol]->set( theFloor[startRow][startCol]->getCp() );
-      mainChar->mutRow(startRow-1);
+      cp1->mutRow(startRow-1);
       theFloor[startRow][startCol]->unSet();
     }
   }
   else if ( direction == "nw" )
   {
-    if ( theFloor[startRow-1][startCol-1]->getPmov() )
+    if (cp1->getType() == "player"?  theFloor[startRow-1][startCol-1]->getPmov() :  theFloor[startRow-1][startCol-1]->getEmov()) 
     {  
       theFloor[startRow-1][startCol-1]->set( theFloor[startRow][startCol]->getCp() );
-       mainChar->mutRow(startRow-1);
-       mainChar->mutCol(startCol-1);
+       cp1->mutRow(startRow-1);
+       cp1->mutCol(startCol-1);
       theFloor[startRow][startCol]->unSet();
     }
   }
   else if ( direction == "ne" )
   {
-    if ( theFloor[startRow-1][startCol+1]->getPmov() )
+    if (cp1->getType() == "player"? theFloor[startRow-1][startCol+1]->getPmov() :  theFloor[startRow-1][startCol+1]->getEmov()) 
     {  
       theFloor[startRow-1][startCol+1]->set( theFloor[startRow][startCol]->getCp() );
-      mainChar->mutRow(startRow-1);
-      mainChar->mutCol(startCol+1);
+      cp1->mutRow(startRow-1);
+      cp1->mutCol(startCol+1);
       theFloor[startRow][startCol]->unSet();
     }
   }
   else if (direction == "so")
   {
-    if ( theFloor[startRow+1][startCol]->getPmov() )
+    if (cp1->getType() == "player"?  theFloor[startRow+1][startCol]->getPmov() :  theFloor[startRow+1][startCol]->getEmov()) 
     {  
       theFloor[startRow+1][startCol]->set( theFloor[startRow][startCol]->getCp() );
-       mainChar->mutRow(startRow+1);
+      cp1->mutRow(startRow+1);
       theFloor[startRow][startCol]->unSet();
     }
   }
   else if (direction == "se")
   {
-    if ( theFloor[startRow+1][startCol+1]->getPmov() )
+    if (cp1->getType() == "player"?  theFloor[startRow+1][startCol+1]->getPmov() :  theFloor[startRow+1][startCol+1]->getEmov()) 
     {  
       theFloor[startRow+1][startCol+1]->set( theFloor[startRow][startCol]->getCp() );
-     mainChar->mutRow(startRow+1);
-     mainChar->mutCol(startCol+1);
+      cp1->mutRow(startRow+1);
+      cp1->mutCol(startCol+1);
       theFloor[startRow][startCol]->unSet();
     }
   }
   else if (direction == "sw")
   {
-    if ( theFloor[startRow+1][startCol-1]->getPmov() )
+    if (cp1->getType() == "player"?  theFloor[startRow+1][startCol-1]->getPmov() :  theFloor[startRow+1][startCol-1]->getEmov())
     {  
       theFloor[startRow+1][startCol-1]->set( theFloor[startRow][startCol]->getCp() );
-  mainChar->mutRow(startRow+1);
- mainChar->mutCol(startCol-1);
+      cp1->mutRow(startRow+1);
+      cp1->mutCol(startCol-1);
 
       theFloor[startRow][startCol]->unSet();
     }
   }
   else if (direction == "ea")
   {
-    if ( theFloor[startRow][startCol+1]->getPmov() )
+    if (cp1->getType() == "player" ?  theFloor[startRow][startCol+1]->getPmov() :  theFloor[startRow][startCol+1]->getEmov()) 
     {  
       theFloor[startRow][startCol+1]->set( theFloor[startRow][startCol]->getCp() );
-      mainChar->mutCol(startCol+1);
+      cp1->mutCol(startCol+1);
       theFloor[startRow][startCol]->unSet();
     }
   }
   else if (direction == "we")
   {
-    if ( theFloor[startRow][startCol-1]->getPmov() )
+    if (cp1->getType() == "player" ?  theFloor[startRow][startCol-1]->getPmov() :  theFloor[startRow][startCol-1]->getEmov()) 
     {  
       theFloor[startRow][startCol-1]->set( theFloor[startRow][startCol]->getCp() );
-      mainChar->mutCol(startCol-1);
+      cp1->mutCol(startCol-1);
       theFloor[startRow][startCol]->unSet();
     }
   }
@@ -206,7 +228,7 @@ std::ostream &operator<<(std::ostream &out, const Floor &f)
     }
   }
   out << "Race: "<< f.mainChar->getRace() << " Gold: " << f.mainChar->getGold();
-  out << "				Floor " << f.level << std::endl;
+  out << "					Floor " << f.level << std::endl;
   out << "HP: " << f.mainChar->getHP() << std::endl;
   out << "Atk: " << f.mainChar->getAtk() << std::endl;
   out << "Def: " << f.mainChar->getDef() << std::endl;

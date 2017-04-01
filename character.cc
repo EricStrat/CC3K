@@ -9,6 +9,7 @@ int Character::getBaseDef() { return baseDef; }
 int Character::getGold() { return gold; }
 int Character::getRow(){ return Row;}
 int Character::getCol(){ return Col;}
+std::string Character::getType(){ return type;}
 std::string Character::getRace() { return race; }
 char Character::getSymbol() { return symbol; }
 void Character::setHP() { HP = baseHP; }
@@ -79,8 +80,8 @@ void Character::mutGold( int i )
 
 void Character::slain() { std::cout << getRace() << " is Slain" << std::endl; }
 
-Character::Character( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race, char symbol )
+Character::Character( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race, char symbol, std::string type)
 : HP{HP}, baseHP{baseHP}, atk{atk}, baseAtk{baseAtk},
-  def{def}, baseDef{baseDef}, gold{gold}, race{race}, symbol{symbol} {}
+  def{def}, baseDef{baseDef}, gold{gold}, race{race}, symbol{symbol}, type{type}{}
 
 Character::~Character() {}

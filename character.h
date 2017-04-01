@@ -18,13 +18,14 @@ class Character
   int baseDef;
   int gold;
   std::string race;
+  std::string type;
   char symbol;  
   int Row;
   int Col;
 
   public:
 
-  Character( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race, char symbol );
+  Character( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race, char symbol, std::string type );
   virtual ~Character();
   Character & operator=(const Character &cp1); 
   int getHP();
@@ -34,10 +35,11 @@ class Character
   int getBaseHP();
   int getBaseAtk();
   int getBaseDef();
+  std::string getType();
   char getSymbol();
   int getRow();
   int getCol();
-   void setHP();
+  void setHP();
   void setAtk();
   void setDef();
   std::string getRace();

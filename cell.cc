@@ -79,11 +79,23 @@ bool Cell::getEmov() const { return emov; }
 bool Cell::getImov() const { return imov; }
 bool Cell::getPmov() const { return pmov; }
 
-void Cell::unSet() { cp = nullptr;}
+void Cell::unSet() {
+  if (cp->getType() == "enemy") { 
+     emov = true;
+     pmov = true;
+}
+ else {
+    pmov = true;
+}
+  cp = nullptr;
+}
+
 
 void Cell::set( Character* cp1 ) 
 { 
   cp = cp1;
+  emov = false;
+  pmov = false; 
 //  notifyObservers( SubscriptionType::NewCharacter );
 }
 

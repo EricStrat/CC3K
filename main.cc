@@ -26,11 +26,12 @@ int main()
   std::cout << "(S)hade, (D)row, (V)ampire, (T)roll, (G)oblin" << std::endl;
   std::string cmd;
   std::cin >> cmd;
+  Floor *floor;
   while(true){
   if (cmd == "s" || cmd == "S" || cmd == "D" || cmd == "d" || cmd == "V" || cmd == "v" || cmd == "T" || cmd == "t" || cmd == "G" || cmd == "g") 
   { 
-    Floor *floor = new Floor( 2, cmd );
-    break;;
+    floor = new Floor( 2, cmd );
+    break;
   }
   else {
   std::cout << "Try again" << std::endl;
@@ -42,7 +43,8 @@ int main()
   std::cout << *floor;
   std::string s;
   while(std::cin >> s){
-  floor->move(s);
+  floor->move(floor->getMainChar(), s);
+  floor->moveEnemies();
   std::cout << *floor;
 }
 }
