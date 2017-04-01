@@ -19,6 +19,8 @@ class Character
   int gold;
   std::string race;
   char symbol;  
+  int Row;
+  int Col;
 
   public:
 
@@ -33,7 +35,9 @@ class Character
   int getBaseAtk();
   int getBaseDef();
   char getSymbol();
-  void setHP();
+  int getRow();
+  int getCol();
+   void setHP();
   void setAtk();
   void setDef();
   std::string getRace();
@@ -42,6 +46,8 @@ class Character
   virtual void mutDef( int i );
   virtual void mutHP( int i );
   virtual void mutGold( int i );
+  virtual void mutRow(int r);
+  virtual void mutCol(int c);
   virtual void slain();
   virtual bool fiftyFifty(); 
 };

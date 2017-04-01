@@ -26,8 +26,10 @@ int main()
   Floor *floor = new Floor( 2, "s" );
   floor->init( 1 );
   std::cout << *floor;
-//  floor->move("no");
-//  std::cout << *floor;
+  std::string s;
+  while(std::cin >> s){
+  floor->move(s);
+  std::cout << *floor;
 }
-
+}
  

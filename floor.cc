@@ -111,13 +111,16 @@ void Floor::init( int lvl )
   }  
 }
 
-void Floor::move( int startRow, int startCol, std::string direction)
+void Floor::move( std::string direction)
 {
+  int startRow = mainChar->getRow();
+  int startCol = mainChar->getCol();
   if ( direction == "no" )
   {
     if ( theFloor[startRow-1][startCol]->getPmov() )
     {  
       theFloor[startRow-1][startCol]->set( theFloor[startRow][startCol]->getCp() );
+      mainChar->mutRow(startRow-1);
       theFloor[startRow][startCol]->unSet();
     }
   }
@@ -126,6 +129,8 @@ void Floor::move( int startRow, int startCol, std::string direction)
     if ( theFloor[startRow-1][startCol-1]->getPmov() )
     {  
       theFloor[startRow-1][startCol-1]->set( theFloor[startRow][startCol]->getCp() );
+       mainChar->mutRow(startRow-1);
+       mainChar->mutCol(startCol-1);
       theFloor[startRow][startCol]->unSet();
     }
   }
@@ -134,6 +139,8 @@ void Floor::move( int startRow, int startCol, std::string direction)
     if ( theFloor[startRow-1][startCol+1]->getPmov() )
     {  
       theFloor[startRow-1][startCol+1]->set( theFloor[startRow][startCol]->getCp() );
+      mainChar->mutRow(startRow-1);
+      mainChar->mutCol(startCol+1);
       theFloor[startRow][startCol]->unSet();
     }
   }
@@ -142,6 +149,7 @@ void Floor::move( int startRow, int startCol, std::string direction)
     if ( theFloor[startRow+1][startCol]->getPmov() )
     {  
       theFloor[startRow+1][startCol]->set( theFloor[startRow][startCol]->getCp() );
+       mainChar->mutRow(startRow+1);
       theFloor[startRow][startCol]->unSet();
     }
   }
@@ -150,6 +158,8 @@ void Floor::move( int startRow, int startCol, std::string direction)
     if ( theFloor[startRow+1][startCol+1]->getPmov() )
     {  
       theFloor[startRow+1][startCol+1]->set( theFloor[startRow][startCol]->getCp() );
+     mainChar->mutRow(startRow+1);
+     mainChar->mutCol(startCol+1);
       theFloor[startRow][startCol]->unSet();
     }
   }
@@ -158,6 +168,9 @@ void Floor::move( int startRow, int startCol, std::string direction)
     if ( theFloor[startRow+1][startCol-1]->getPmov() )
     {  
       theFloor[startRow+1][startCol-1]->set( theFloor[startRow][startCol]->getCp() );
+  mainChar->mutRow(startRow+1);
+ mainChar->mutCol(startCol-1);
+
       theFloor[startRow][startCol]->unSet();
     }
   }
@@ -166,6 +179,7 @@ void Floor::move( int startRow, int startCol, std::string direction)
     if ( theFloor[startRow][startCol+1]->getPmov() )
     {  
       theFloor[startRow][startCol+1]->set( theFloor[startRow][startCol]->getCp() );
+      mainChar->mutCol(startCol+1);
       theFloor[startRow][startCol]->unSet();
     }
   }
@@ -174,6 +188,7 @@ void Floor::move( int startRow, int startCol, std::string direction)
     if ( theFloor[startRow][startCol-1]->getPmov() )
     {  
       theFloor[startRow][startCol-1]->set( theFloor[startRow][startCol]->getCp() );
+      mainChar->mutCol(startCol-1);
       theFloor[startRow][startCol]->unSet();
     }
   }

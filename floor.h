@@ -23,7 +23,7 @@ class Floor
   Floor( int lvl, std::string cmd );
   ~Floor();
   void clearFloor();
-  void move( int x, int y, std::string direction );
+  void move( std::string direction );
   void init( int lvl );
 //  void set(int r, int c, Character* pc1 );
   

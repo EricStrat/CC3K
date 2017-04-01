@@ -7,6 +7,8 @@ int Character::getBaseAtk() { return baseAtk; }
 int Character::getDef() { return def; }
 int Character::getBaseDef() { return baseDef; }
 int Character::getGold() { return gold; }
+int Character::getRow(){ return Row;}
+int Character::getCol(){ return Col;}
 std::string Character::getRace() { return race; }
 char Character::getSymbol() { return symbol; }
 void Character::setHP() { HP = baseHP; }
@@ -48,6 +50,14 @@ void Character::mutDef( int i )
 {
   def += i;
   if ( def < 0 ) def = 0;
+}
+
+void Character::mutRow(int r){
+  Row = r;
+}
+
+void Character::mutCol(int c){
+  Col = c;
 }
 
 void Character::mutHP( int i )
