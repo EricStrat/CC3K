@@ -17,7 +17,7 @@ class Player : public Character
   public: 
 
   virtual ~Player();  
-  Player( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race );
+  Player( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race, char symbol = '@' );
 
   virtual void attack( Human &e ) = 0;
   virtual void attack( Dwarf &e ) = 0;

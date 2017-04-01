@@ -1,6 +1,6 @@
 #include "dwarf.h"
 
-Dwarf::Dwarf() : Enemy( 100, 100, 20, 20, 30, 30, 0, "Dwarf" ) {}
+Dwarf::Dwarf() : Enemy( 100, 100, 20, 20, 30, 30, 0, "Dwarf", 'D' ) {}
 Dwarf::~Dwarf() {}
 
 void Dwarf::attack( Shade &p )

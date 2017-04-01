@@ -1,6 +1,6 @@
 #include "elf.h"
 
-Elf::Elf() : Enemy( 140, 140, 30, 30, 10, 10, 0, "Elf" ) {}
+Elf::Elf() : Enemy( 140, 140, 30, 30, 10, 10, 0, "Elf", 'E' ) {}
 Elf::~Elf() {}
 
 void Elf::attack( Shade &p )

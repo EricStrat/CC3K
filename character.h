@@ -24,7 +24,7 @@ class Character
 
   Character( int HP, int baseHP, int atk, int baseAtk, int def, int baseDef, int gold, std::string race, char symbol );
   virtual ~Character();
-
+  Character & operator=(const Character &cp1); 
   int getHP();
   int getAtk();
   int getDef();
@@ -32,6 +32,7 @@ class Character
   int getBaseHP();
   int getBaseAtk();
   int getBaseDef();
+  char getSymbol();
   void setHP();
   void setAtk();
   void setDef();

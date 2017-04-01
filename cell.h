@@ -8,28 +8,31 @@
 #include "observer.h"
 #include "character.h"
 #include "subscriptions.h"
+#include <string>
 
 class Cell : public Subject, public Observer {
+  
   Character* cp;
   char symbol;
-  string name;
+  std::string name;
   int row, col;
   bool emov, pmov, imov;
 
  public:
+
   Cell( char sym, int r, int c );
   ~Cell();
-  Character* getCp();
-  void setCp();       
+  void set( Character* cp1);       
   void setCoords(int r, int c);
-  void unsetCp();
-  char getSymbol();
-  std::string getname();
-  int getRow();
-  int getCol();
- bool getEmov();
- bool getPmov();
- bool getImov();
+  void unSet();
+  char getSymbol() const;
+  std::string getname() const;
+  Character* getCp() const;
+  int getRow() const;
+  int getCol() const;
+  bool getEmov() const;
+  bool getPmov() const;
+  bool getImov() const;
 
   SubscriptionType subType() const override;
   void notify(Subject &whoNotified) override;  

@@ -4,59 +4,59 @@
 #include "cell.h"
 #include "subscriptions.h"
 
-Cell::Cell( char sym, int r, int c) : cp{nullptr} row{r}, col{c} 
+Cell::Cell( char sym, int r, int c) : cp{nullptr}, row{r}, col{c} 
 {
 	if ( sym == 'A' || sym == 'B' || sym == 'C' || sym == 'D' || sym == 'E' )
 	{
-		symbol = '.'
-			name = "tile";
+		symbol = '.';
+		name = "tile";
 		pmov = true;
 		imov = true;
-		emove = true;
+		emov = true;
 	}
 	else {
 		symbol = sym;
-		else if ( sym == '#' )
+		if ( sym == '#' )
 		{
 			name = "passage";
 			pmov = true;
 			imov = false;
-			emove = false;
+			emov = false;
 		}
 		else if ( sym == '|' )
 		{
 			name = "Vwall";
 			pmov = false;
 			imov = false;
-			emove = false;
+			emov = false;
 		}
 		else if ( sym == '-' )
 		{
 			name = "Hwall";
 			pmov = false;
 			imov = false;
-			emove = false;
+			emov = false;
 		}
 		else if ( sym == ' ' )
 		{
 			name = "blank";
 			pmov = false;
 			imov = false;
-			emove = false;
+			emov = false;
 		}
 		else if ( sym == '\n' )
 		{
 			name = "newline";
 			pmov = false;
 			imov = false;
-			emove = false;
+			emov = false;
 		}
 		else if ( sym == '\\' )
 		{
 			name = "stairs";
 			pmov = true;
 			imov = false;
-			emove = false;
+			emov = false;
 		}       
 	}
 }
@@ -64,25 +64,25 @@ Cell::Cell( char sym, int r, int c) : cp{nullptr} row{r}, col{c}
 Cell::~Cell() { delete cp; }
 
 Character* Cell::getCp() const { return cp; }
-char Cell::getSymbol() { return symbol; }
-std::string Cell::getname() { return name; }
-int Cell::getRow() { return row; }
-int Cell::getCol() { return col; }
-bool Cell::getEmov() { return emov; }
-bool Cell::getImov() { return imov; }
-bool Cell::getPmov() { return pmov; }
+char Cell::getSymbol() const { return symbol; }
+std::string Cell::getname() const { return name; }
+int Cell::getRow() const { return row; }
+int Cell::getCol() const { return col; }
+bool Cell::getEmov() const { return emov; }
+bool Cell::getImov() const { return imov; }
+bool Cell::getPmov() const { return pmov; }
 
-void Cell::unSetCp() { cp = nullptr;}
+void Cell::unSet() { cp = nullptr;}
 
-void Cell::setCp( character* cp1 ) 
+void Cell::set( Character* cp1 ) 
 { 
   cp = cp1;
-  notifyObservers( SubscriptionType::NewCharacter );
+//  notifyObservers( SubscriptionType::NewCharacter );
 }
 
 void Cell::notify( Subject &whoNotified )
 { 
-  notifyObservers( SubscriptionType::NewCharacter );
+  notifyObservers( SubscriptionType::All );
 }
 
 SubscriptionType Cell::subType() const { return SubscriptionType::SwitchOnly; }

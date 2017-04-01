@@ -1,6 +1,6 @@
 #include "human.h"
 
-Human::Human() : Enemy( 140, 140, 20, 20, 20, 20, 0, "Human" ) {}
+Human::Human() : Enemy( 140, 140, 20, 20, 20, 20, 0, "Human", 'H' ) {}
 Human::~Human(){}
 
 void Human::attack( Shade &p )
@@ -16,6 +16,7 @@ void Human::attack( Shade &p )
   else std::cout << "missed" << std::endl;
 }
 
+	 
 void Human::attack( Drow &p )
 {
   std::cout << "Human Attacks Drow" << std::endl;

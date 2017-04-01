@@ -2,23 +2,32 @@
 #define _FLOOR_H_
 #include <iostream>
 #include <vector>
+#include "chamber.h"
 #include "cell.h"
-#include "textdisplay.h"
+#include "character.h"
 #include <string>
+#include <fstream>
+#include "posn.h"
 
-class Floor { 
+class Floor 
+{ 
+  std::vector<std::vector<Cell*>> theFloor;
+  std::vector<Chamber*> theChambers;
+  std::vector<Character*> theCharacters;
+  int level, len, wid;
+  
+  Character* mainChar;
 
-  std::vector<std::vector<Cell>> theGrid;  // The actual grid.
-  TextDisplay *td; // The text display.
-  int level, gridLen, gridWid;
-  void clearGrid();   // Frees the grid.
-
- public:
-  Floor();
+  public:
+  
+  Floor( int lvl, std::string cmd );
   ~Floor();
-  void move(int startRow, int startCol, std::string direction );
-  void init(int lv, int n, int m);
-  void setCell(int r, int c, character *pc1 );
+  void clearFloor();
+  void move( int x, int y, std::string direction );
+  void init( int lvl );
+//  void set(int r, int c, Character* pc1 );
+  
+
 
   friend std::ostream &operator<<(std::ostream &out, const Floor &f);
 };

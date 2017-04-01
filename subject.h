@@ -10,7 +10,6 @@ class Subject {
  public:
   void attach(Observer *o);  
   void notifyObservers(SubscriptionType t);
-  virtual Info getInfo() const = 0;
   virtual ~Subject() = 0;
 };
 

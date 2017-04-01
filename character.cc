@@ -8,9 +8,24 @@ int Character::getDef() { return def; }
 int Character::getBaseDef() { return baseDef; }
 int Character::getGold() { return gold; }
 std::string Character::getRace() { return race; }
+char Character::getSymbol() { return symbol; }
 void Character::setHP() { HP = baseHP; }
 void Character::setAtk() { atk = baseAtk; }
 void Character::setDef() { def = baseDef; }
+Character & Character:: operator=(const Character &other)
+{
+  if(this == &other) return *this;
+  HP = other.HP; 
+  baseHP = other.baseHP; 
+  atk = other.atk; 
+  baseAtk = other.baseAtk; 
+  def = other.def; 
+  baseDef = other.baseDef; 
+  gold = other.gold; 
+  race = other.race; 
+  symbol = other.symbol;
+  return *this;
+}  
 
 bool Character::fiftyFifty() { return rand() % 2; }
 

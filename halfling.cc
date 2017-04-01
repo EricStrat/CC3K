@@ -1,6 +1,6 @@
 #include "halfling.h"
 
-Halfling::Halfling() : Enemy( 100, 100, 15, 15, 20, 20, 0, "Halfling" ) {}
+Halfling::Halfling() : Enemy( 100, 100, 15, 15, 20, 20, 0, "Halfling", 'L' ) {}
 Halfling::~Halfling() {}
 
 void Halfling::attack( Shade &p )

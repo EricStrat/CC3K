@@ -2,7 +2,7 @@
 
 int Merchant::agro = false;
 
-Merchant::Merchant() : Enemy( 30, 30, 70, 70, 25, 25, 0, "Merchant" ) {}
+Merchant::Merchant() : Enemy( 30, 30, 70, 70, 25, 25, 0, "Merchant", 'M' ) {}
 Merchant::~Merchant() {}
 
 void Merchant::attack( Shade &p )

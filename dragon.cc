@@ -1,6 +1,6 @@
 #include "dragon.h"
 
-Dragon::Dragon() : Enemy( 150, 150, 30, 30, 25, 25, 0, "Dragon" ) {}
+Dragon::Dragon() : Enemy( 150, 150, 30, 30, 25, 25, 0, "Dragon", '9' ) {}
 Dragon::~Dragon() {}
 
 void Dragon::attack( Shade &s )

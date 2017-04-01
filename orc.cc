@@ -1,6 +1,6 @@
 #include "orc.h"
 
-Orc::Orc() : Enemy( 180, 180, 30, 30, 25, 25, 0, "Orc" ) {}
+Orc::Orc() : Enemy( 180, 180, 30, 30, 25, 25, 0, "Orc", 'O' ) {}
 Orc::~Orc() {}
 
 void Orc::attack( Shade &p )
