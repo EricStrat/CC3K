@@ -5,6 +5,7 @@
 #include "chamber.h"
 #include "cell.h"
 #include "character.h"
+#include "player.h"
 #include <string>
 #include <fstream>
 #include "posn.h"
@@ -16,7 +17,7 @@ class Floor
   std::vector<Character*> theCharacters;
   int level, len, wid;
   
-  Character* mainChar;
+  Player* mainChar;
 
   public:
   

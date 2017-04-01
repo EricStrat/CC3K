@@ -58,6 +58,13 @@ Cell::Cell( char sym, int r, int c) : cp{nullptr}, row{r}, col{c}
 			imov = false;
 			emov = false;
 		}       
+              	else if ( sym == '+' )
+		{
+			name = "exit";
+			pmov = true;
+			imov = false;
+			emov = false;
+		}
 	}
 }
 

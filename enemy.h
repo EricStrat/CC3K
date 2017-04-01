@@ -21,7 +21,6 @@ class Enemy : public Character
   virtual void attack( Vampire &p ) = 0;
   virtual void attack( Troll &p ) = 0;
   virtual void attack( Goblin &p ) = 0;
-
   virtual void attackedBy( Player &p ) = 0;
 
 };

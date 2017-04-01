@@ -22,8 +22,22 @@
 int main() 
 {
   std::string str;
-  
-  Floor *floor = new Floor( 2, "s" );
+  std::cout << "Choose your race" << std::endl;
+  std::cout << "(S)hade, (D)row, (V)ampire, (T)roll, (G)oblin" << std::endl;
+  std::string cmd;
+  std::cin >> cmd;
+  while(true){
+  if (cmd == "s" || cmd == "S" || cmd == "D" || cmd == "d" || cmd == "V" || cmd == "v" || cmd == "T" || cmd == "t" || cmd == "G" || cmd == "g") 
+  { 
+    Floor *floor = new Floor( 2, cmd );
+    break;;
+  }
+  else {
+  std::cout << "Try again" << std::endl;
+  std::cin.ignore();
+  std::cin.clear();
+}
+}
   floor->init( 1 );
   std::cout << *floor;
   std::string s;
