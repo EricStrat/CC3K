@@ -6,24 +6,31 @@
 #include "textdisplay.h"
 #include "subject.h"
 #include "observer.h"
-#include "character.h"
+#include "player.h"
+#include "enemy.h"
 #include "subscriptions.h"
 #include <string>
 
-class Cell : public Subject, public Observer {
+class Cell 
+{
+
+  std::vector< Cell* > nbors;
   
   Character* cp;
   char symbol;
   std::string name;
   int row, col;
   bool emov, pmov, imov;
-
+  bool stair;
  public:
+
+  void attachNbor( Cell* cell );
+  void notifyNbors();
 
   Cell( char sym, int r, int c );
   ~Cell();
   void set( Character* cp1);       
-  void setCoords(int r, int c);
+  void setStair();
   void unSet();
   char getSymbol() const;
   std::string getname() const;
@@ -33,8 +40,9 @@ class Cell : public Subject, public Observer {
   bool getEmov() const;
   bool getPmov() const;
   bool getImov() const;
+  bool getStair()const;
+  void link( Cell* nbor );
+  void notify( Cell &whoNoitified );
 
-  SubscriptionType subType() const override;
-  void notify(Subject &whoNotified) override;  
 };
 #endif

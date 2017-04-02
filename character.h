@@ -52,5 +52,7 @@ class Character
   virtual void mutCol(int c);
   virtual void slain();
   virtual bool fiftyFifty(); 
+  
+
 };
 #endif

@@ -1,2 +1,2 @@
 cell.o: cell.cc subject.h subscriptions.h observer.h cell.h textdisplay.h \
- character.h
+ player.h character.h enemy.h

@@ -9,7 +9,7 @@ class Subject {
   std::vector<Observer*> observers;
  public:
   void attach(Observer *o);  
-  void notifyObservers(SubscriptionType t);
+  void notifyObservers();
   virtual ~Subject() = 0;
 };
 

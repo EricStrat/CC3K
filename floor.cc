@@ -32,18 +32,14 @@ void Floor::newTurn()
 
 }
 
-void Floor::init( int lvl ) 
+void Floor::init() 
 { 
-
-//check if clear
   if ( theFloor.size() ) clearFloor();
-// make Chambers
   for ( int i = 0; i < 5; ++i )
   {
     Chamber* ch = new Chamber;
     theChambers.emplace_back( ch );
-  }
-// generate enemies    
+  }    
   srand( time(NULL) );
   for ( int i = 0; i < 20; ++i ) 
   {
@@ -79,11 +75,8 @@ void Floor::init( int lvl )
       theEnemies.emplace_back( ene );
     }
   }
-
-//read in stage
   std::ifstream file("stage.txt");
-  level = lvl;
-  int row = 0;
+   int row = 0;
   int col = 0;
   char cha;
   while ( file.get(cha) ) 
@@ -101,23 +94,43 @@ void Floor::init( int lvl )
       else if ( cha == 'C' ) theChambers.at( 2 )->theChamber.emplace_back( cell );
       else if ( cha == 'D' ) theChambers.at( 3 )->theChamber.emplace_back( cell );
       else if ( cha == 'E' ) theChambers.at( 4 )->theChamber.emplace_back( cell ); 
-      ++col;
-    }
-    if ( col == 80 )
-    {
-      col = 0;
-      ++row;
-    }
+      if ( row != 0 && col != 0 )
+      {
+        cell->link( theFloor[row-1][col] ); // link to the left
+        cell->link( theFloor[row-1][col-1] ); // link up left
+        cell->link( theFloor[row][col-1] ); // link up
+      }
+      else if ( row != 0 ) cell->link( theFloor[row-1][col] ); 
+      else if ( col != 0 ) cell->link( theFloor[row][col-1] );
+  
+    ++col;
+  }
+  if ( col == 80 )
+  {
+    col = 0;
+    ++row;
+  }
   }
   srand( time(NULL) );
   int q = rand() % 5;
   theChambers.at( q )->placeChar( mainChar );
-  
+  int z; 
   for ( int i = 0; i < 20; ++i )
   {
-    int z = rand() % 5;
+    z = rand() % 5;
     theChambers.at( z )->placeChar( theEnemies.at( i ) );
-  }  
+}
+    // place stair not in chamber z
+    while ( true )
+    {
+      int st = rand() % 5;
+      if ( st != z ) 
+      {
+        int room = rand() % (theChambers.at( st )->theChamber.size());
+        theChambers.at( st )->theChamber.at( room )->setStair();
+        break;
+      }
+    }
 }
 
 void Floor::moveEnemies()
@@ -144,6 +157,7 @@ void Floor::move( Character* cp1, std::string direction )
       theFloor[startRow-1][startCol]->set( theFloor[startRow][startCol]->getCp() );
       cp1->mutRow(startRow-1);
       theFloor[startRow][startCol]->unSet();
+      theFloor[startRow-1][startCol]->notifyNbors();
     }
   }
   else if ( direction == "nw" )
@@ -153,7 +167,8 @@ void Floor::move( Character* cp1, std::string direction )
       theFloor[startRow-1][startCol-1]->set( theFloor[startRow][startCol]->getCp() );
        cp1->mutRow(startRow-1);
        cp1->mutCol(startCol-1);
-      theFloor[startRow][startCol]->unSet();
+       theFloor[startRow][startCol]->unSet();
+       theFloor[startRow-1][startCol-1]->notifyNbors();
     }
   }
   else if ( direction == "ne" )
@@ -164,6 +179,7 @@ void Floor::move( Character* cp1, std::string direction )
       cp1->mutRow(startRow-1);
       cp1->mutCol(startCol+1);
       theFloor[startRow][startCol]->unSet();
+      theFloor[startRow-1][startCol+1]->notifyNbors();
     }
   }
   else if (direction == "so")
@@ -173,6 +189,7 @@ void Floor::move( Character* cp1, std::string direction )
       theFloor[startRow+1][startCol]->set( theFloor[startRow][startCol]->getCp() );
       cp1->mutRow(startRow+1);
       theFloor[startRow][startCol]->unSet();
+      theFloor[startRow+1][startCol]->notifyNbors();
     }
   }
   else if (direction == "se")
@@ -183,6 +200,7 @@ void Floor::move( Character* cp1, std::string direction )
       cp1->mutRow(startRow+1);
       cp1->mutCol(startCol+1);
       theFloor[startRow][startCol]->unSet();
+      theFloor[startRow+1][startCol+1]->notifyNbors();
     }
   }
   else if (direction == "sw")
@@ -192,8 +210,8 @@ void Floor::move( Character* cp1, std::string direction )
       theFloor[startRow+1][startCol-1]->set( theFloor[startRow][startCol]->getCp() );
       cp1->mutRow(startRow+1);
       cp1->mutCol(startCol-1);
-
       theFloor[startRow][startCol]->unSet();
+      theFloor[startRow+1][startCol-1]->notifyNbors();
     }
   }
   else if (direction == "ea")
@@ -203,6 +221,7 @@ void Floor::move( Character* cp1, std::string direction )
       theFloor[startRow][startCol+1]->set( theFloor[startRow][startCol]->getCp() );
       cp1->mutCol(startCol+1);
       theFloor[startRow][startCol]->unSet();
+      theFloor[startRow][startCol+1]->notifyNbors();
     }
   }
   else if (direction == "we")
@@ -212,10 +231,86 @@ void Floor::move( Character* cp1, std::string direction )
       theFloor[startRow][startCol-1]->set( theFloor[startRow][startCol]->getCp() );
       cp1->mutCol(startCol-1);
       theFloor[startRow][startCol]->unSet();
+      theFloor[startRow][startCol-1]->notifyNbors();
+    }
+  }
+
+  if( isAtStairs() ) std::cout << isWon() << std::endl;
+}
+
+void Floor::attack( std::string direction )
+{
+  if ( direction == "no" )
+  {
+    if ( theFloor[mainChar->getRow()-1][mainChar->getCol()]->getCp() && theFloor[mainChar->getRow()-1][mainChar->getCol()]->getCp()->getType() == "enemy" )
+    {
+      static_cast<Enemy*>(theFloor[mainChar->getRow()-1][mainChar->getCol()]->getCp())->attackedBy( *static_cast<Player*>(mainChar) );
+    }
+  }
+  else if ( direction == "so" )
+  {
+    if ( theFloor[mainChar->getRow()+1][mainChar->getCol()]->getCp() && theFloor[mainChar->getRow()+1][mainChar->getCol()]->getCp()->getType() == "enemy" )
+    {
+      static_cast<Enemy*>(theFloor[mainChar->getRow()+1][mainChar->getCol()]->getCp())->attackedBy( *static_cast<Player*>(mainChar) );
+    }
+  }
+  else if ( direction == "ea" )
+  {
+    if ( theFloor[mainChar->getRow()][mainChar->getCol()+1]->getCp() && theFloor[mainChar->getRow()-1][mainChar->getCol()]->getCp()->getType() == "enemy" )
+    {
+      static_cast<Enemy*>(theFloor[mainChar->getRow()][mainChar->getCol()+1]->getCp())->attackedBy( *static_cast<Player*>(mainChar) );
+    }
+  }
+  else if ( direction == "we" )
+  {
+    if ( theFloor[mainChar->getRow()][mainChar->getCol()-1]->getCp() && theFloor[mainChar->getRow()-1][mainChar->getCol()]->getCp()->getType() == "enemy" )
+    {
+      static_cast<Enemy*>(theFloor[mainChar->getRow()][mainChar->getCol()-1]->getCp())->attackedBy( *static_cast<Player*>(mainChar) );
+    }
+  }
+  else if ( direction == "nw" )
+  {
+    if ( theFloor[mainChar->getRow()-1][mainChar->getCol()-1]->getCp() && theFloor[mainChar->getRow()-1][mainChar->getCol()-1]->getCp()->getType() == "enemy" )
+    {
+      static_cast<Enemy*>(theFloor[mainChar->getRow()-1][mainChar->getCol()-1]->getCp())->attackedBy( *static_cast<Player*>(mainChar) );
+    }
+  }
+  else if ( direction == "ne" )
+  {
+    if ( theFloor[mainChar->getRow()-1][mainChar->getCol()+1]->getCp() && theFloor[mainChar->getRow()-1][mainChar->getCol()+1]->getCp()->getType() == "enemy" )
+    {
+      static_cast<Enemy*>(theFloor[mainChar->getRow()-1][mainChar->getCol()+1]->getCp())->attackedBy( *static_cast<Player*>(mainChar) );
+    }
+  }
+  else if ( direction == "se" )
+  {
+    if ( theFloor[mainChar->getRow()+1][mainChar->getCol()+1]->getCp() && theFloor[mainChar->getRow()+1][mainChar->getCol()+1]->getCp()->getType() == "enemy" )
+    {
+      static_cast<Enemy*>(theFloor[mainChar->getRow()+1][mainChar->getCol()+1]->getCp())->attackedBy( *static_cast<Player*>(mainChar) );
+    }
+  }
+  else if ( direction == "sw" )
+  {
+    if ( theFloor[mainChar->getRow()][mainChar->getCol()-1]->getCp() && theFloor[mainChar->getRow()][mainChar->getCol()-1]->getCp()->getType() == "enemy" )
+    {
+      static_cast<Enemy*>(theFloor[mainChar->getRow()][mainChar->getCol()-1]->getCp())->attackedBy( *static_cast<Player*>(mainChar) );
     }
   }
 }
 
+
+bool Floor::isAtStairs() { return theFloor[mainChar->getRow()][mainChar->getCol()]->getStair(); }
+
+std::string Floor::isWon()
+{
+	if ( level == 5 ) return "WIN!";
+	else 
+	{ 
+		++level;
+		init();
+		return "New Floor!";
+	}
+}
 
 std::ostream &operator<<(std::ostream &out, const Floor &f) 
 {
@@ -228,7 +323,7 @@ std::ostream &operator<<(std::ostream &out, const Floor &f)
     }
   }
   out << "Race: "<< f.mainChar->getRace() << " Gold: " << f.mainChar->getGold();
-  out << "					Floor " << f.level << std::endl;
+  out << "						Floor " << f.level << std::endl;
   out << "HP: " << f.mainChar->getHP() << std::endl;
   out << "Atk: " << f.mainChar->getAtk() << std::endl;
   out << "Def: " << f.mainChar->getDef() << std::endl;
